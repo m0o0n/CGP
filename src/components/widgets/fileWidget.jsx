@@ -6,10 +6,14 @@ import { DropIcon } from '../../icons/dropIcon';
 import { ImageIcon } from '../../icons/imageIcon';
 import { deleteBlock, copyBlock, editBlock } from '../../store/constructorReducer';
 
-const FileWidget = ({ type, textValue, id, dragStartHandler,
+const FileWidget = ({
+    type,
+    id,
+    dragStartHandler,
     dragEndHandler,
     dragOverHandler,
-    onDropHandler }) => {
+    onDropHandler
+}) => {
     const dispatch = useDispatch()
     return (
         <div

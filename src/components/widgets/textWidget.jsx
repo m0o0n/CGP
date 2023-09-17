@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ArrowDownIcon } from '../../icons/arrowDownIcon';
 import { ArrowUpIcon } from '../../icons/arrowUpIcon';
 import { ButtonIcon } from '../../icons/buttonIcon';
@@ -18,7 +18,6 @@ const TextWidget = ({
     onDropHandler
 }) => {
     const dispatch = useDispatch()
-    // const data = useSelector(state => state.Constructor)
 
     const renderIcon = () => {
         switch (type) {
