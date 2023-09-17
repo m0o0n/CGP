@@ -5,7 +5,7 @@ import { WorkSpace } from './components/workSpace/workSpace';
 
 function App() {
   return (
-    <div className='wrapper'>
+    <div className="wrapper">
       <ToolBar />
       <WorkSpace />
       <Content />
