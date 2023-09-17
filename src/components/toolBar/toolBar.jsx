@@ -34,7 +34,7 @@ const ToolBar = () => {
                 className="tool_bar__item"
                 draggable={true}
                 onDragStart={(e) => dragStartHandler(e, e.target)}
-                data-type="headline"
+                data-type="image"
             >
                 <ImageIcon />
                 <span>Image</span>
