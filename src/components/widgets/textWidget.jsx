@@ -7,10 +7,19 @@ import { DropIcon } from '../../icons/dropIcon';
 import { HeadLineIcon } from '../../icons/headLineIcon';
 import { ParagraphIcon } from '../../icons/paragraphIcon';
 import { deleteBlock, copyBlock, editBlock } from '../../store/constructorReducer';
-import { useState } from 'react';
-const TextWidget = ({ type, textValue, id }) => {
+
+const TextWidget = ({
+    type,
+    textValue,
+    id,
+    dragStartHandler,
+    dragEndHandler,
+    dragOverHandler,
+    onDropHandler
+}) => {
     const dispatch = useDispatch()
-    const data = useSelector(state => state.Constructor)
+    // const data = useSelector(state => state.Constructor)
+
     const renderIcon = () => {
         switch (type) {
             case 'headline':
@@ -29,6 +38,11 @@ const TextWidget = ({ type, textValue, id }) => {
             className="work_space__item"
             data-id={id}
             draggable={true}
+            onDragStart={(e) => dragStartHandler(e, e.currentTarget)}
+            onDragLeave={(e) => dragEndHandler(e)}
+            onDragEnd={(e) => dragEndHandler(e)}
+            onDragOver={(e) => dragOverHandler(e)}
+            onDrop={(e) => onDropHandler(e, e.currentTarget)}
         >
 
             <div className="control">
