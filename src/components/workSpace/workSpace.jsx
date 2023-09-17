@@ -1,48 +1,46 @@
 import * as React from 'react';
 import { TextWidget } from '../widgets/textWidget';
 import { useSelector, useDispatch } from 'react-redux';
-import { addBlock, setBlocks, setDragCurrent } from '../../store/constructorReducer';
+import { setBlocks, setDragCurrent } from '../../store/constructorReducer';
 import { FileWidget } from '../widgets/fileWidget';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
-const WorkSpace = ({ onDrop, onDragOver }) => {
-    const data = useSelector(state => state.Constructor)
-    useEffect(()=>{
-        setItems(data.blocks)
-    }, [data.blocks])
-
-    useEffect(()=>{
-        setCurrentItem(data.onDragCurrent)
-    }, [data.onDragCurrent])
-
-
+const WorkSpace = () => {
     const dispatch = useDispatch()
+    const {blocks, onDragCurrent} = useSelector(state => state.Constructor)
+    const [items, setItems] = useState(blocks)
+    const [currentItem, setCurrentItem] = useState(null)
+    useEffect(()=>{
+        setItems(blocks)
+    }, [blocks])
+
+    useEffect(()=>{
+        setCurrentItem(onDragCurrent)
+    }, [onDragCurrent])
+
+
+
     const isActiveHandler = (e) => {
         if (e.target.className === "widget") {
-            e.target.parentNode.classList.add('work_space__item__active')
-            console.log(Array.from(e.target.parentNode.parentNode.children))
+            e.target.parentNode.classList.contains('work_space__item__active') 
+            ? e.target.parentNode.classList.remove('work_space__item__active')
+            : e.target.parentNode.classList.add('work_space__item__active')
             Array.from(e.target.parentNode.parentNode.children).forEach((el) => {
                 if (el !== e.target.parentNode) {
                     el.classList.remove('work_space__item__active')
                 }
-
             })
         }
     }
-    const [items, setItems] = useState(data.blocks)
-    const [currentItem, setCurrentItem] = useState(null)
-    const dragStartHandler = (e, target) => {
 
-        console.log('dragStartHandler', target)
+    const dragStartHandler = (e, target) => {
         const currentItemInArray = items.find((el) => el.id === Number(target.dataset.id))
-        console.log(target)
         setCurrentItem(currentItemInArray)
         
     }
     const dragEndHandler = (e) => {
         e.preventDefault()
-        console.log('dragEndHandler')
         e.currentTarget.style.opacity = '1'
     }
     const dragOverHandler = (e) => {
@@ -60,10 +58,9 @@ const WorkSpace = ({ onDrop, onDragOver }) => {
         }
         
     }
-    const onDropHandler = (e, target) => {
+    const onDropHandler = (e) => {
         e.preventDefault()
         e.currentTarget.style.opacity = '1'
-        console.log('onDropHandler', target, currentItem)
     }
     return (
 
@@ -71,9 +68,8 @@ const WorkSpace = ({ onDrop, onDragOver }) => {
             className='work_space'
             onDrop={(e) => {
                 e.preventDefault()
-                if (data.onDragCurrent && data.onDragCurrent.type) {
+                if (onDragCurrent && onDragCurrent.type) {
                     dispatch(setDragCurrent(null))
-                    console.log(items)
                 }
             }}
             onDragOver={(e) => {
@@ -84,23 +80,23 @@ const WorkSpace = ({ onDrop, onDragOver }) => {
             }}
         >
             {
-                data.blocks.map((el) => {
+                blocks.map(({id, value, type}) => {
                     return (
-                        el.type === 'image'
+                        type === 'image'
                             ? <FileWidget
-                                key={el.id}
-                                id={el.id}
-                                type={el.type}
+                                key={id}
+                                id={id}
+                                type={type}
                                 dragStartHandler={dragStartHandler}
                                 dragEndHandler={dragEndHandler}
                                 dragOverHandler={dragOverHandler}
                                 onDropHandler={onDropHandler}
                             />
                             : <TextWidget
-                                key={el.id}
-                                id={el.id}
-                                textValue={el.value}
-                                type={el.type}
+                                key={id}
+                                id={id}
+                                textValue={value}
+                                type={type}
                                 dragStartHandler={dragStartHandler}
                                 dragEndHandler={dragEndHandler}
                                 dragOverHandler={dragOverHandler}
